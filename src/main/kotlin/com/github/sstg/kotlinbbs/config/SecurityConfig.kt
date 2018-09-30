@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 
 @EnableWebSecurity
@@ -23,14 +25,24 @@ class SecurityConfig(val userDetailService: UserDetailsService) : WebSecurityCon
 
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
-                .antMatchers("/css/**", "/images/**", "/layui/**", "/mods/**", "/reg")
+                .antMatchers("/css/**", "/images/**", "/layui/**", "/mods/**", "/user/reg")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login") //注1
+                .loginPage("/user/login") //注1
+                .successHandler(SimpleUrlAuthenticationSuccessHandler())
                 .usernameParameter("email")
                 .permitAll()
+                .and()
+                .logout()
+//                .logoutUrl("/user/logout")
+                .logoutRequestMatcher(AntPathRequestMatcher("/user/logout", "GET"))
+                .deleteCookies("remember-me")
+                .logoutSuccessUrl("/login")
+                .permitAll()
+                .and()
+                .rememberMe()
     }
 
 
