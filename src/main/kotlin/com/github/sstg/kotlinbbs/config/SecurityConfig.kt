@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 
@@ -22,7 +22,6 @@ class SecurityConfig(val userDetailService: UserDetailsService) : WebSecurityCon
         auth.userDetailsService(userDetailService).passwordEncoder(BCryptPasswordEncoder())
     }
 
-
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
                 .antMatchers("/css/**", "/images/**", "/layui/**", "/mods/**", "/user/reg")
@@ -30,20 +29,17 @@ class SecurityConfig(val userDetailService: UserDetailsService) : WebSecurityCon
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/user/login") //注1
-                .successHandler(SimpleUrlAuthenticationSuccessHandler())
+                .loginPage("/user/login")
+                .successHandler(SavedRequestAwareAuthenticationSuccessHandler())
                 .usernameParameter("email")
                 .permitAll()
                 .and()
                 .logout()
-//                .logoutUrl("/user/logout")
+                // 使用 `.logoutUrl("/user/logout")` 的方式只支持 POST 方式登出
                 .logoutRequestMatcher(AntPathRequestMatcher("/user/logout", "GET"))
                 .deleteCookies("remember-me")
-                .logoutSuccessUrl("/login")
                 .permitAll()
                 .and()
                 .rememberMe()
     }
-
-
 }

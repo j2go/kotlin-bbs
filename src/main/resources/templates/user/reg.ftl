@@ -4,10 +4,7 @@
     <meta charset="utf-8">
     <title>注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="fly,layui,前端社区">
-    <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
-    <link rel="stylesheet" href="/layui/css/layui.css">
-    <link rel="stylesheet" href="/css/global.css">
+    <#include "../common/link.ftl"/>
 </head>
 <body>
 
@@ -23,7 +20,7 @@
             <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
                 <div class="layui-tab-item layui-show">
                     <div class="layui-form layui-form-pane">
-                        <form method="post" action="/reg">
+                        <form method="post" action="/user/reg">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <div class="layui-form-item">
                                 <label for="L_email" class="layui-form-label">邮箱</label>
@@ -66,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <input class="layui-btn" value="立即注册"/>
+                                <input type="submit" class="layui-btn" value="立即注册"/>
                             </div>
                             <div class="layui-form-item fly-form-app">
                                 <span>或者直接使用社交账号快捷注册</span>
@@ -84,15 +81,7 @@
 
 </div>
 
-<div class="fly-footer">
-    <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/"
-                                                                                target="_blank">layui.com 出品</a></p>
-    <p>
-        <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
-        <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
-        <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
-    </p>
-</div>
+<#include "../common/footer.ftl"/>
 
 <script src="/layui/layui.js"></script>
 <script>

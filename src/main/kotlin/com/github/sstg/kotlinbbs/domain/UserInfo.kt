@@ -23,7 +23,7 @@ class UserInfo : UserDetails {
     var authorities = ""
     var passwd = ""
 
-    override fun getAuthorities(): List<out GrantedAuthority> {
+    override fun getAuthorities(): List<GrantedAuthority> {
         return authorities.split(",").map { SimpleGrantedAuthority(it) }
     }
 

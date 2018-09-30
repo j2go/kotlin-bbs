@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/user")
 class UserController(val userInfoRepository: UserInfoRepository) {
 
-
     @GetMapping("/login")
     fun login() = "user/login"
 
@@ -31,4 +30,16 @@ class UserController(val userInfoRepository: UserInfoRepository) {
         userInfoRepository.save(userInfo)
         return "redirect:/login"
     }
+
+    @GetMapping("/home", "")
+    fun home() = "user/home"
+
+    @GetMapping("/setting")
+    fun set() = "user/set"
+
+    @GetMapping("/message")
+    fun message() = "user/message"
+
+    @GetMapping("/index")
+    fun index() = "user/index"
 }

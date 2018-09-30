@@ -9,4 +9,8 @@ class IndexController {
     @GetMapping("/")
     fun index() = "index"
 
+    @GetMapping("/test")
+    fun testThrow() {
+        throw RuntimeException("测试抛异常")
+    }
 }
