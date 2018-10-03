@@ -21,7 +21,9 @@ class UserDetailServiceImpl(val userInfoRepository: UserInfoRepository) : UserDe
     fun handleLoginSuccess(event: InteractiveAuthenticationSuccessEvent) {
         var details = event.authentication.principal
         if (details is UserInfo) {
-            RequestContextHolder.currentRequestAttributes().setAttribute("username", details.name, SCOPE_SESSION)
+            val requestAttributes = RequestContextHolder.currentRequestAttributes()
+            requestAttributes.setAttribute("username", details.name, SCOPE_SESSION)
+//            requestAttributes.setAttribute("userid", details.id, SCOPE_SESSION)
         }
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Repository
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -22,6 +23,9 @@ class UserInfo : UserDetails {
     var accountNonLocked = true
     var authorities = ""
     var passwd = ""
+
+    var level = 1
+    var createTime = Date()
 
     override fun getAuthorities(): List<GrantedAuthority> {
         return authorities.split(",").map { SimpleGrantedAuthority(it) }

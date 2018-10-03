@@ -30,6 +30,7 @@ class SecurityConfig(val userDetailService: UserDetailsService) : WebSecurityCon
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
+                // 支持跳转登录认证之前的链接的 Handler
                 .successHandler(SavedRequestAwareAuthenticationSuccessHandler())
                 .usernameParameter("email")
                 .permitAll()
