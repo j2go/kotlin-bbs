@@ -24,6 +24,7 @@ class UserInfo : UserDetails {
     var authorities = ""
     var passwd = ""
 
+    var avatorUrl = ""
     var level = 1
     var createTime = Date()
 
@@ -47,4 +48,5 @@ class UserInfo : UserDetails {
 @Repository
 interface UserInfoRepository : CrudRepository<UserInfo, Long> {
     fun findByEmail(email: String): UserInfo
+    fun findByIdIn(ids: List<Long>): List<UserInfo>
 }

@@ -12,37 +12,7 @@
 <body>
 
 <#include "../common/header.ftl"/>
-
-<div class="layui-hide-xs">
-    <div class="fly-panel fly-column">
-        <div class="layui-container">
-            <ul class="layui-clear">
-                <li class="layui-hide-xs"><a href="/">首页</a></li>
-                <li class="layui-this"><a href="">提问</a></li>
-                <li><a href="">分享<span class="layui-badge-dot"></span></a></li>
-                <li><a href="">讨论</a></li>
-                <li><a href="">建议</a></li>
-                <li><a href="">公告</a></li>
-                <li><a href="">动态</a></li>
-                <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
-
-                <!-- 用户登入后显示 -->
-                <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/index">我发表的贴</a></li>
-                <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/index#collection">我收藏的贴</a>
-                </li>
-            </ul>
-
-            <div class="fly-column-right layui-hide-xs">
-                <span class="fly-search"><i class="layui-icon"></i></span>
-                <a href="/topic/add" class="layui-btn">发表新帖</a>
-            </div>
-            <div class="layui-hide-sm layui-show-xs-block"
-                 style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
-                <a href="/topic/add" class="layui-btn">发表新帖</a>
-            </div>
-        </div>
-    </div>
-</div>
+<#include "../common/column.ftl"/>
 
 <div class="layui-container">
     <div class="layui-row layui-col-space15">
@@ -115,8 +85,8 @@
                 </fieldset>
 
                 <ul class="jieda" id="jieda">
-
-                    <li data-id="111" class="jieda-daan">
+                  <#list replies as reply>
+                    <li data-id="${reply.data.id}" class="jieda-daan">
                         <a name="item-1111111111"></a>
                         <div class="detail-about detail-about-reply">
                             <a class="fly-avatar" href="">
@@ -125,7 +95,7 @@
                             </a>
                             <div class="fly-detail-user">
                                 <a href="" class="fly-link">
-                                    <cite>贤心</cite>
+                                    <cite>${reply.user.name}</cite>
                                     <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                                     <i class="layui-badge fly-badge-vip">VIP3</i>
                                 </a>
@@ -142,10 +112,10 @@
                                 <span>2017-11-30</span>
                             </div>
 
-                            <i class="iconfont icon-caina" title="最佳答案"></i>
+                            <#if reply.data.helpful><i class="iconfont icon-caina" title="最佳答案"></i></#if>
                         </div>
                         <div class="detail-body jieda-body photos">
-                            <p>香菇那个蓝瘦，这是一条被采纳的回帖</p>
+                            <p>${reply.data.content}</p>
                         </div>
                         <div class="jieda-reply">
                             <span class="jieda-zan zanok" type="zan">
@@ -160,12 +130,13 @@
                             </div>
                         </div>
                     </li>
-
+                  </#list>
                     <!-- <li class="fly-none">消灭零回复</li> -->
                 </ul>
 
                 <div class="layui-form layui-form-pane">
-                    <form action="/topic/${topic.id}/reply" method="post">
+                    <form action="/jie/reply" method="post">
+                    <#--<form action="/topic/${topic.id}/reply" method="post">-->
                         <div class="layui-form-item layui-form-text">
                             <a name="comment"></a>
                             <div class="layui-input-block">

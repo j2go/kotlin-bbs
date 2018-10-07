@@ -14,7 +14,7 @@ class ReplyController(val topicRepository: TopicRepository,
                       val topicReplyRepository: TopicReplyRepository) {
 
     @PostMapping("/topic/{id}/reply")
-    fun replyTopic(@PathVariable id: Long, @RequestParam content: String): Long {
+    fun replyTopic(@PathVariable id: Long, @RequestParam content: String): TopicReply {
         if (!topicRepository.findById(id).isPresent) {
             throw RuntimeException("帖子不存在")
         }
@@ -23,6 +23,6 @@ class ReplyController(val topicRepository: TopicRepository,
         reply.content = content
         reply.userId = AuthUtil.currentUser().id
 
-        return topicReplyRepository.save(reply).id
+        return topicReplyRepository.save(reply)
     }
 }

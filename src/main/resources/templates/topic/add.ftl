@@ -23,7 +23,7 @@
                 </ul>
                 <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
                     <div class="layui-tab-item layui-show">
-                        <form action="/api/topics" method="post">
+                        <form action="/topic" method="post">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <div class="layui-row layui-col-space15 layui-form-item">
                                 <div class="layui-col-md3">
@@ -31,12 +31,12 @@
                                     <div class="layui-input-block">
                                         <select lay-verify="required" name="type" lay-filter="column">
                                             <option></option>
-                                            <option value="0">提问</option>
-                                            <option value="99">分享</option>
-                                            <option value="100">讨论</option>
-                                            <option value="101">建议</option>
-                                            <option value="168">公告</option>
-                                            <option value="169">动态</option>
+                                            <option value="1">提问</option>
+                                            <option value="2">分享</option>
+                                            <option value="3">讨论</option>
+                                            <option value="4">建议</option>
+                                            <option value="5">公告</option>
+                                            <option value="6">动态</option>
                                         </select>
                                     </div>
                                 </div>
