@@ -48,5 +48,5 @@ class UserInfo : UserDetails {
 @Repository
 interface UserInfoRepository : CrudRepository<UserInfo, Long> {
     fun findByEmail(email: String): UserInfo
-    fun findByIdIn(ids: List<Long>): List<UserInfo>
+    fun findByIdIn(ids: Collection<Long>): List<UserInfo>
 }

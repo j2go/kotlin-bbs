@@ -3,6 +3,7 @@ package com.github.sstg.kotlinbbs.web
 import com.github.sstg.kotlinbbs.domain.*
 import com.github.sstg.kotlinbbs.util.AuthUtil
 import org.springframework.cglib.beans.BeanCopier
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Controller
@@ -14,6 +15,10 @@ class TopicController(val topicRepository: TopicRepository,
                       val userInfoRepository: UserInfoRepository,
                       val topicReplyRepository: TopicReplyRepository) {
 
+    val timeDesc = Sort.Order.desc("createTime")
+    val top = Sort.Order.desc("isTop")
+    val scoreDesc = Sort.Order.desc("score")
+
     @GetMapping("/topic", "/")
     fun index(@RequestParam(defaultValue = "0") type: Int,
               @RequestParam(defaultValue = "0") sort: Int,
@@ -24,28 +29,42 @@ class TopicController(val topicRepository: TopicRepository,
         model["sort"] = sort
         model["page"] = page + 1
 
-        Sort(Sort.Direction.DESC, "createTime")
-        val pageRequest =
-                if (sort == 0)
-                    PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createTime"))
-                else
-                    PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "score"))
+        val pageRequest = pageRequestOfSort(sort, page, size)
 
-        model["topicPage"] =
-                if (type > 0) {
-                    topicRepository.findByTypeAndStatus(type, 1, pageRequest)
-                } else {
-                    topicRepository.findByStatus(1, pageRequest)
-                }
+        val topicPage = topicPageOfType(type, pageRequest)
+
+        val userIds = topicPage.content.asSequence().map { it.userId }.toSet()
+        val userMap = userMapOfUserIds(userIds)
+
+        model["lastPage"] = topicPage.number
+        model["hasNext"] = topicPage.hasNext()
+        model["topics"] = topicPage.content.map {
+            TopicDesc(it.id, TOPIC_TYPE[it.type]!!, it.title, it.isTop, it.isNice, it.userId,
+                    userMap[it.userId]!!.name, it.createTime.toString(), it.experience, it.replyNum)
+        }
         return ModelAndView("topic/index", model)
+    }
+
+    private fun userMapOfUserIds(userIds: Set<Long>) =
+            userInfoRepository.findByIdIn(userIds).map { it.id to it }.toMap()
+
+    private fun pageRequestOfSort(sort: Int, page: Int, size: Int): PageRequest {
+        return if (sort == 0)
+            PageRequest.of(page, size, Sort.by(top, timeDesc))
+        else
+            PageRequest.of(page, size, Sort.by(top, scoreDesc))
+    }
+
+    private fun topicPageOfType(type: Int, pageRequest: PageRequest): Page<Topic> {
+        return if (type > 0) {
+            topicRepository.findByTypeAndStatus(type, 1, pageRequest)
+        } else {
+            topicRepository.findByStatus(1, pageRequest)
+        }
     }
 
     @GetMapping("/topic/add")
     fun add() = "topic/add"
-
-    @GetMapping("/detail")
-    fun detail() = "topic/detail"
-
 
     val topicCopier = BeanCopier.create(TopicForm::class.java, Topic::class.java, false)!!
 
@@ -63,31 +82,31 @@ class TopicController(val topicRepository: TopicRepository,
     @GetMapping("/topic/{id}")
     fun getTopics(@PathVariable id: Long): ModelAndView {
         val map = mutableMapOf<String, Any>()
-        val topic = topicRepository.findById(id)
-        if (!topic.isPresent) {
-            throw RuntimeException("主题不存在")
-        }
-        map["topic"] = topic.get()
+        //TODO 处理不存在的异常
+        val topic = topicRepository.findById(id).get()
+        topic.readNum += 1
+        topicRepository.save(topic)
+
+        map["topic"] = topic
         map["sort"] = 0
-        map["type"] = topic.get().type
+        map["type"] = topic.type
 
         val currentUser = AuthUtil.currentUser()
         map["isAdmin"] = currentUser.authorities.contains("ADMIN")
 
-        if (currentUser.id == topic.get().userId) {
+        if (currentUser.id == topic.userId) {
             map["ofMine"] = true
             map["author"] = currentUser
         } else {
             map["ofMine"] = false
-            map["author"] = userInfoRepository.findById(topic.get().userId).get()
+            map["author"] = userInfoRepository.findById(topic.userId).get()
         }
 
-        var replies = topicReplyRepository.findByTopicId(topic.get().id)
+        var replies = topicReplyRepository.findByTopicIdAndStatus(topic.id, 1)
         map["replyNum"] = replies.size
 
-
-        val userIds = replies.map { it.userId }
-        val userMap = userInfoRepository.findByIdIn(userIds).map { it.id to it }.toMap()
+        val userIds = replies.asSequence().map { it.userId }.toSet()
+        val userMap = userMapOfUserIds(userIds)
         map["replies"] = replies.map { ReplyDto(it, userMap[it.userId]!!) }
 
         return ModelAndView("topic/detail", map)
@@ -106,7 +125,17 @@ class TopicForm {
     var experience = 0
 }
 
-data class ReplyDto(
-        val data: TopicReply,
-        val user: UserInfo
+data class ReplyDto(val data: TopicReply, val user: UserInfo)
+
+data class TopicDesc(
+        val id: Long,
+        val typeName: String,
+        val title: String,
+        val isTop: Boolean,
+        val isNice: Boolean,
+        val userId: Long,
+        val userName: String,
+        val createTime: String,
+        val experience: Int,
+        val replyNum: Int
 )

@@ -18,35 +18,35 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md8">
             <div class="fly-panel" style="margin-bottom: 0;">
-        
-        <#include "../common/filter.ftl"/>
+
+            <#include "../common/filter.ftl"/>
 
                 <ul class="fly-list">
-                <#list topicPage.content as topic >
+                <#list topics as topic >
                     <li>
                         <a href="/user/home/${topic.userId}" class="fly-avatar">
                             <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
                                  alt="贤心">
                         </a>
                         <h2>
-                            <a class="layui-badge">分享</a>
+                            <a class="layui-badge">${topic.typeName}</a>
                             <a href="/topic/${topic.id}">${topic.title}</a>
                         </h2>
                         <div class="fly-list-info">
-                            <a href="user/home.html" link>
-                                <cite>贤心</cite>
+                            <a href="/user/home/${topic.userId}" link>
+                                <cite>${topic.userName}</cite>
                                 <!--
                                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                                 <i class="layui-badge fly-badge-vip">VIP3</i>
                                 -->
                             </a>
-                            <span>刚刚</span>
+                            <span>${topic.createTime}</span>
 
                             <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i
                                     class="iconfont icon-kiss"></i> ${topic.experience}</span>
                             <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
                             <span class="fly-list-nums">
-                    <i class="iconfont icon-pinglun1" title="回答"></i> 66
+                    <i class="iconfont icon-pinglun1" title="回答"></i> ${topic.replyNum}
                   </span>
                         </div>
                         <div class="fly-list-badge">
@@ -71,10 +71,10 @@
                     <#--<a href="/jie/page/4/">4</a>-->
                     <#--<a href="/jie/page/5/">5</a>-->
                         <span>…</span>
-                        <a href="/topic?type=${type}&sort=${sort}&page=${topicPage.number}" class="laypage-last"
+                        <a href="/topic?type=${type}&sort=${sort}&page=${lastPage}" class="laypage-last"
                            title="尾页">尾页</a>
-                        <#if topicPage.hasNext()>
-                        <a href="/topic?type=${type}&sort=${sort}&page=${topicPage.NumberOfElements + 1}"
+                        <#if hasNext>
+                        <a href="/topic?type=${type}&sort=${sort}&page=${page + 1}"
                            class="laypage-next">下一页</a>
                         </#if>
                     </div>
@@ -85,42 +85,6 @@
         <div class="layui-col-md4">
             <dl class="fly-panel fly-list-one">
                 <dt class="fly-panel-title">本周热议</dt>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
                 <dd>
                     <a href="">基于 layui 的极简社区页面模版</a>
                     <span><i class="iconfont icon-pinglun1"></i> 16</span>

@@ -29,10 +29,10 @@ layui.define('fly', function (exports) {
             , time: 10000
         };
         elemQuiz.addClass('layui-hide');
-        if (value === '0') {
+        if (value === '1') {
             layer.tips('下面的信息将便于您获得更好的答案', obj.othis, tips);
             elemQuiz.removeClass('layui-hide');
-        } else if (value === '99') {
+        } else if (value === '2') {
             layer.tips('系统会对【分享】类型的帖子予以飞吻奖励，但我们需要审核，通过后方可展示', obj.othis, tips);
         }
     });
@@ -43,7 +43,7 @@ layui.define('fly', function (exports) {
     // });
 
     //提交回答
-    fly.form['/jie/reply/'] = function (data, required) {
+    fly.form['/reply'] = function (data, required) {
         var tpl = '<li>\
       <div class="detail-about detail-about-reply">\
         <a class="fly-avatar" href="/u/{{ layui.cache.user.uid }}" target="_blank">\

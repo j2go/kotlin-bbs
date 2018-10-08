@@ -57,7 +57,6 @@
                                             <option></option>
                                             <option value="layui">layui</option>
                                             <option value="独立版layer">独立版layer</option>
-                                            <option value="独立版layDate">独立版layDate</option>
                                             <option value="LayIM">LayIM</option>
                                             <option value="Fly社区模板">Fly社区模板</option>
                                         </select>
@@ -122,7 +121,6 @@
 </div>
 
 <#include "../common/footer.ftl"/>
-
 
 <script src="/layui/layui.js"></script>
 <script>

@@ -135,8 +135,9 @@
                 </ul>
 
                 <div class="layui-form layui-form-pane">
-                    <form action="/jie/reply" method="post">
+                    <form action="/reply" method="post">
                     <#--<form action="/topic/${topic.id}/reply" method="post">-->
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="layui-form-item layui-form-text">
                             <a name="comment"></a>
                             <div class="layui-input-block">
@@ -146,8 +147,8 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <input type="hidden" name="jid" value="123">
-                            <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
+                            <input type="hidden" name="id" value="${topic.id}">
+                            <input type="submit" value="提交回复" class="layui-btn" lay-filter="*">
                         </div>
                     </form>
                 </div>
@@ -206,12 +207,12 @@
         var $ = layui.$
                 , fly = layui.fly;
         //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
-        /*
+
         $('.detail-body').each(function(){
           var othis = $(this), html = othis.html();
           othis.html(fly.content(html));
         });
-        */
+
     });
 </script>
 

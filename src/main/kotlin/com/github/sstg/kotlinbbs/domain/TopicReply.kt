@@ -29,4 +29,5 @@ class TopicReply {
 @Repository
 interface TopicReplyRepository : CrudRepository<TopicReply, Long> {
     fun findByTopicId(id: Long): List<TopicReply>
+    fun findByTopicIdAndStatus(id: Long, status: Int): List<TopicReply>
 }

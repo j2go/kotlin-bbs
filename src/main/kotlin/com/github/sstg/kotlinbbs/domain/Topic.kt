@@ -26,6 +26,7 @@ class Topic {
     var experience = 0
 
     var readNum = 0
+    var replyNum = 0
     // 置顶
     var isTop = false
     // 加精
@@ -38,6 +39,8 @@ class Topic {
     var createTime = Date()
     var lastModifyTime = Date()
 }
+
+val TOPIC_TYPE = mapOf(1 to "提问", 2 to "分享", 3 to "讨论", 4 to "建议", 5 to "公告", 6 to "动态")
 
 @Repository
 interface TopicRepository : PagingAndSortingRepository<Topic, Long> {

@@ -28,7 +28,7 @@ class UserController(val userInfoRepository: UserInfoRepository) {
         userInfo.authorities = "USER"
 
         userInfoRepository.save(userInfo)
-        return "redirect:/login"
+        return "redirect:/"
     }
 
     @GetMapping("/home", "")
