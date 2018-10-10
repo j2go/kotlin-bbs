@@ -28,6 +28,9 @@ class SecurityConfig(val userDetailService: UserDetailsService) : WebSecurityCon
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .csrf()
+                .ignoringAntMatchers("/action/**", "/message/**", "/reply/**")
+                .and()
                 .formLogin()
                 .loginPage("/user/login")
                 // 支持跳转登录认证之前的链接的 Handler

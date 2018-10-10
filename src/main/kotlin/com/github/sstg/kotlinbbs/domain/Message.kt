@@ -7,28 +7,24 @@ import javax.persistence.*
 
 @Entity
 @Table
-class TopicReply {
+class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id = 0L
 
-    var topicId = 0L
     var userId = 0L
-    var toUserId = 0L
-
     var content = ""
-    var experience = 0
-    var likeNum = 0
-
-    var helpful = false
-    var status = 1
+    var readed = false
 
     var createTime = Date()
-    var lastModifyTime = Date()
+
+    var expireTime = Date()
 }
 
 @Repository
-interface TopicReplyRepository : CrudRepository<TopicReply, Long> {
-    fun findByTopicId(id: Long): List<TopicReply>
-    fun findByTopicIdAndStatus(id: Long, status: Int): List<TopicReply>
+interface MessageRepository : CrudRepository<Message, Long> {
+    fun findByUserId(userId: Long): List<Message>
+    fun findByUserIdAndReaded(userId: Long, read: Boolean): List<Message>
+
+    fun countByUserIdAndReaded(userId: Long, read: Boolean): Long
 }

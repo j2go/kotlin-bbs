@@ -27,6 +27,7 @@ class Topic {
 
     var readNum = 0
     var replyNum = 0
+    var likeNum = 0
     // 置顶
     var isTop = false
     // 加精

@@ -10,11 +10,11 @@
         </ul>
 
         <ul class="layui-nav fly-nav-user">
-      <#if Session.username?exists>
+      <#if Session.user?exists>
           <li class="layui-nav-item">
               <a class="fly-nav-avatar" href="javascript:;">
               <#--${Session["username"]!"交流"}-->
-                  <cite class="layui-hide-xs">${Session.username}</cite>
+                  <cite class="layui-hide-xs">${Session.user.name}</cite>
                   <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
                   <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
                   <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">

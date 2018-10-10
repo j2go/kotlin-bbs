@@ -22,7 +22,7 @@ class UserDetailServiceImpl(val userInfoRepository: UserInfoRepository) : UserDe
         var details = event.authentication.principal
         if (details is UserInfo) {
             val requestAttributes = RequestContextHolder.currentRequestAttributes()
-            requestAttributes.setAttribute("username", details.name, SCOPE_SESSION)
+            requestAttributes.setAttribute("user", details, SCOPE_SESSION)
 //            requestAttributes.setAttribute("userid", details.id, SCOPE_SESSION)
         }
     }

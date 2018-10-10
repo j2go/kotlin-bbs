@@ -9,21 +9,23 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
+import java.util.*
 
 @Controller
 class TopicController(val topicRepository: TopicRepository,
                       val userInfoRepository: UserInfoRepository,
-                      val topicReplyRepository: TopicReplyRepository) {
+                      val topicReplyRepository: TopicReplyRepository,
+                      val userLikeRepository: UserLikeRepository) {
 
     val timeDesc = Sort.Order.desc("createTime")
     val top = Sort.Order.desc("isTop")
     val scoreDesc = Sort.Order.desc("score")
 
     @GetMapping("/topic", "/")
-    fun index(@RequestParam(defaultValue = "0") type: Int,
-              @RequestParam(defaultValue = "0") sort: Int,
-              @RequestParam(defaultValue = "0") page: Int,
-              @RequestParam(defaultValue = "10") size: Int): ModelAndView {
+    fun list(@RequestParam(defaultValue = "0") type: Int,
+             @RequestParam(defaultValue = "0") sort: Int,
+             @RequestParam(defaultValue = "0") page: Int,
+             @RequestParam(defaultValue = "10") size: Int): ModelAndView {
         val model = mutableMapOf<String, Any>()
         model["type"] = type
         model["sort"] = sort
@@ -39,8 +41,8 @@ class TopicController(val topicRepository: TopicRepository,
         model["lastPage"] = topicPage.number
         model["hasNext"] = topicPage.hasNext()
         model["topics"] = topicPage.content.map {
-            TopicDesc(it.id, TOPIC_TYPE[it.type]!!, it.title, it.isTop, it.isNice, it.userId,
-                    userMap[it.userId]!!.name, it.createTime.toString(), it.experience, it.replyNum)
+            TopicDesc(it.id, TOPIC_TYPE[it.type]!!, it.title, it.isTop, it.isNice,
+                    userMap[it.userId]!!, it.createTime, it.experience, it.replyNum)
         }
         return ModelAndView("topic/index", model)
     }
@@ -107,11 +109,13 @@ class TopicController(val topicRepository: TopicRepository,
 
         val userIds = replies.asSequence().map { it.userId }.toSet()
         val userMap = userMapOfUserIds(userIds)
-        map["replies"] = replies.map { ReplyDto(it, userMap[it.userId]!!) }
+
+        val likedReplySet = userLikeRepository.findByUserIdAndType(currentUser.id, 2).asSequence().map { it.targetId }.toSet()
+
+        map["replies"] = replies.map { ReplyDto(it, userMap[it.userId]!!, likedReplySet.contains(it.id), it.userId == currentUser.id) }
 
         return ModelAndView("topic/detail", map)
     }
-
 }
 
 
@@ -125,7 +129,7 @@ class TopicForm {
     var experience = 0
 }
 
-data class ReplyDto(val data: TopicReply, val user: UserInfo)
+data class ReplyDto(val data: TopicReply, val user: UserInfo, val liked: Boolean, val canEdit: Boolean)
 
 data class TopicDesc(
         val id: Long,
@@ -133,9 +137,8 @@ data class TopicDesc(
         val title: String,
         val isTop: Boolean,
         val isNice: Boolean,
-        val userId: Long,
-        val userName: String,
-        val createTime: String,
+        val user: UserInfo,
+        val createTime: Date,
         val experience: Int,
         val replyNum: Int
 )

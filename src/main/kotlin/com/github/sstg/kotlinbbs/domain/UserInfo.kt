@@ -17,6 +17,7 @@ class UserInfo : UserDetails {
 
     var email = ""
     var name = ""
+    var sex = "男"
     var enable = true
     var credentialsNonExpired = true
     var accountNonExpired = true

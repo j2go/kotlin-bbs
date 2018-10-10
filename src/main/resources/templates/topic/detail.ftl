@@ -33,7 +33,7 @@
               <span class="layui-badge layui-bg-red">精帖</span>
           </#if>
           <#if isAdmin>
-            <div class="fly-admin-box" data-id="123">
+            <div class="fly-admin-box" data-id="${topic.id}">
                 <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
               <#if topic.top>
                 <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0"
@@ -65,9 +65,9 @@
                             <i class="iconfont icon-renzheng" title="认证信息：{{ rows.user.approve }}"></i>
                             <i class="layui-badge fly-badge-vip">VIP3</i>
                         </a>
-                        <span>2017-11-30</span>
+                        <span>${topic.createTime}</span>
                     </div>
-                    <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
+                    <div class="detail-hits" id="LAY_jieAdmin" data-id="${topic.id}">
                         <span style="padding-right: 10px; color: #FF7200">悬赏：${topic.experience}飞吻</span>
                         <#if ofMine>
                         <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="/topic/${topic.id}/edit">编辑此贴</a></span>
@@ -100,7 +100,7 @@
                                     <i class="layui-badge fly-badge-vip">VIP3</i>
                                 </a>
 
-                                <span>(楼主)</span>
+                                <#if topic.userId == reply.data.userId><span>(楼主)</span></#if>
                                 <!--
                                 <span style="color:#5FB878">(管理员)</span>
                                 <span style="color:#FF9E3F">（社区之光）</span>
@@ -109,23 +109,26 @@
                             </div>
 
                             <div class="detail-hits">
-                                <span>2017-11-30</span>
+                                <span>${reply.data.lastModifyTime}</span>
                             </div>
 
                             <#if reply.data.helpful><i class="iconfont icon-caina" title="最佳答案"></i></#if>
                         </div>
                         <div class="detail-body jieda-body photos">
-                            <p>${reply.data.content}</p>
+                            ${reply.data.content}
                         </div>
                         <div class="jieda-reply">
-                            <span class="jieda-zan zanok" type="zan">
+                            <span class="jieda-zan <#if reply.liked>zanok</#if>" type="zan">
                             <i class="iconfont icon-zan"></i>
-                            <em>66</em>
+                            <em>${reply.data.likeNum}</em>
                             </span>
                             <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span>
                             <div class="jieda-admin">
-                                <span type="edit">编辑</span>
-                                <span type="del">删除</span>
+
+                                <#if reply.canEdit>
+                                    <span type="edit">编辑</span>
+                                    <span type="del">删除</span>
+                                </#if>
                                 <!-- <span class="jieda-accept" type="accept">采纳</span> -->
                             </div>
                         </div>
@@ -148,7 +151,8 @@
                         </div>
                         <div class="layui-form-item">
                             <input type="hidden" name="id" value="${topic.id}">
-                            <input type="submit" value="提交回复" class="layui-btn" lay-filter="*">
+                        <#--<input type="submit" value="提交回复" class="layui-btn" lay-filter="*">-->
+                            <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
                         </div>
                     </form>
                 </div>
@@ -192,11 +196,11 @@
 <script>
     layui.cache.page = 'jie';
     layui.cache.user = {
-        username: '游客'
-        , uid: -1
-        , avatar: '/images/avatar/00.jpg'
+        username: '${Session.user.name}'
+        , uid: ${Session.user.id}
+        , avatar: '${Session.user.avatorUrl}'
         , experience: 83
-        , sex: '男'
+        , sex: '${Session.user.sex}'
     };
     layui.config({
         version: "3.0.0"
@@ -208,9 +212,9 @@
                 , fly = layui.fly;
         //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
 
-        $('.detail-body').each(function(){
-          var othis = $(this), html = othis.html();
-          othis.html(fly.content(html));
+        $('.detail-body').each(function () {
+            var othis = $(this), html = othis.html();
+            othis.html(fly.content(html));
         });
 
     });

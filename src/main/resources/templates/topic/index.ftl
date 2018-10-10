@@ -24,9 +24,9 @@
                 <ul class="fly-list">
                 <#list topics as topic >
                     <li>
-                        <a href="/user/home/${topic.userId}" class="fly-avatar">
-                            <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
-                                 alt="贤心">
+                        <a href="/user/home/${topic.user.id}" class="fly-avatar">
+                            <img src="${topic.user.avatorUrl}"
+                                 alt="${topic.user.name}">
                         </a>
                         <h2>
                             <a class="layui-badge">${topic.typeName}</a>
@@ -34,7 +34,7 @@
                         </h2>
                         <div class="fly-list-info">
                             <a href="/user/home/${topic.userId}" link>
-                                <cite>${topic.userName}</cite>
+                                <cite>${topic.user.name}</cite>
                                 <!--
                                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                                 <i class="layui-badge fly-badge-vip">VIP3</i>
@@ -133,11 +133,11 @@
 <script>
     layui.cache.page = 'jie';
     layui.cache.user = {
-        username: '游客'
-        , uid: -1
-        , avatar: '/images/avatar/00.jpg'
+        username: '${Session.user.name}'
+        , uid: ${Session.user.id}
+        , avatar: '${Session.user.avatorUrl}'
         , experience: 83
-        , sex: '男'
+        , sex: '${Session.user.sex}'
     };
     layui.config({
         version: "3.0.0"
