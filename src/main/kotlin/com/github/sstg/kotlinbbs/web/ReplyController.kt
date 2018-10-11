@@ -14,9 +14,8 @@ import java.util.*
 class ReplyController(val topicRepository: TopicRepository,
                       val topicReplyRepository: TopicReplyRepository) {
 
-    //    @RequestMapping("/reply", method = [RequestMethod.POST])
     @PostMapping("/reply")
-    fun replyTopic(@RequestParam id: Long, @RequestParam content: String): Result {
+    fun replyTopic(@RequestParam id: Long, @RequestParam content: String): ActionResult {
         val topic = topicRepository.findById(id).get()
         topic.replyNum += 1
         topicRepository.save(topic)
@@ -27,7 +26,7 @@ class ReplyController(val topicRepository: TopicRepository,
         reply.userId = AuthUtil.currentUser().id
         topicReplyRepository.save(reply)
 
-        return Result(0, "")
+        return ActionResult(0, "")
     }
 
     @PostMapping("/reply/{id}")
@@ -37,19 +36,19 @@ class ReplyController(val topicRepository: TopicRepository,
     }
 
     @PostMapping("/reply/update")
-    fun updateReply(@RequestParam id: Long, @RequestParam content: String): Result {
+    fun updateReply(@RequestParam id: Long, @RequestParam content: String): ActionResult {
         val reply = topicReplyRepository.findById(id).get()
         reply.content = content
         reply.lastModifyTime = Date()
         topicReplyRepository.save(reply)
-        return Result(0, "")
+        return ActionResult(0, "")
     }
 
     @PostMapping("/reply/delete")
-    fun deleteReply(@RequestParam id: Long): Result {
+    fun deleteReply(@RequestParam id: Long): ActionResult {
         val reply = topicReplyRepository.findById(id).get()
         if (reply.userId != AuthUtil.currentUser().id) {
-            return Result(-2, "不能删除别人的回复")
+            return ActionResult(-2, "不能删除别人的回复")
         }
         reply.status = 4
         topicReplyRepository.save(reply)
@@ -58,7 +57,7 @@ class ReplyController(val topicRepository: TopicRepository,
         topic.replyNum -= 1
         topicRepository.save(topic)
 
-        return Result(0, "")
+        return ActionResult(0, "")
     }
 }
 

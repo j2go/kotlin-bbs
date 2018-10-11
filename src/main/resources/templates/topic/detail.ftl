@@ -36,16 +36,16 @@
             <div class="fly-admin-box" data-id="${topic.id}">
                 <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
               <#if topic.top>
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0"
+                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="top" rank="false"
                       style="background-color:#ccc;">取消置顶</span>
               <#else>
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span>
+                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="top" rank="true">置顶</span>
               </#if>
               <#if topic.nice>
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0"
+                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="nice" rank="false"
                       style="background-color:#ccc;">取消加精</span>
               <#else>
-                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span>
+                <span class="layui-btn layui-btn-xs jie-admin" type="set" field="nice" rank="true">加精</span>
               </#if>
             </div>
           </#if>
@@ -129,7 +129,7 @@
                                     <span type="edit">编辑</span>
                                     <span type="del">删除</span>
                                 </#if>
-                                <!-- <span class="jieda-accept" type="accept">采纳</span> -->
+                            <#if topic.userId == Session.user.id && !reply.data.helpful><span class="jieda-accept" type="accept">采纳</span></#if>
                             </div>
                         </div>
                     </li>

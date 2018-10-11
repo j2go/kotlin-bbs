@@ -33,7 +33,7 @@
                             <a href="/topic/${topic.id}">${topic.title}</a>
                         </h2>
                         <div class="fly-list-info">
-                            <a href="/user/home/${topic.userId}" link>
+                            <a href="/user/home/${topic.user.id}" link>
                                 <cite>${topic.user.name}</cite>
                                 <!--
                                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>

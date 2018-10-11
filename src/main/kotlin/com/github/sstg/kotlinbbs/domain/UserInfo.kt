@@ -27,6 +27,7 @@ class UserInfo : UserDetails {
 
     var avatorUrl = ""
     var level = 1
+    var experience = 666
     var createTime = Date()
 
     override fun getAuthorities(): List<GrantedAuthority> {

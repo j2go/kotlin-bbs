@@ -37,11 +37,6 @@ layui.define('fly', function (exports) {
         }
     });
 
-    // form.on('submit(form-topic)', function (data) {
-    //     layer.msg("发布成功，id: " + data);
-    //     return false;
-    // });
-
     //提交回答
     fly.form['/reply'] = function (data, required) {
         var tpl = '<li>\
@@ -81,11 +76,11 @@ layui.define('fly', function (exports) {
         del: function (div) {
             layer.confirm('确认删除该求解么？', function (index) {
                 layer.close(index);
-                fly.json('/api/jie-delete/', {
+                fly.json('/action/topic-del', {
                     id: div.data('id')
                 }, function (res) {
                     if (res.status === 0) {
-                        location.href = '/jie/';
+                        location.href = '/';
                     } else {
                         layer.msg(res.msg);
                     }
@@ -96,7 +91,7 @@ layui.define('fly', function (exports) {
         //设置置顶、状态
         , set: function (div) {
             var othis = $(this);
-            fly.json('/api/jie-set/', {
+            fly.json('/action/topic-set', {
                 id: div.data('id')
                 , rank: othis.attr('rank')
                 , field: othis.attr('field')
@@ -113,7 +108,7 @@ layui.define('fly', function (exports) {
             fly.json('/action/collection/' + type, {
                 cid: div.data('id')
             }, function (res) {
-                if(res.status === 0) {
+                if (res.status === 0) {
                     if (type === 'add') {
                         othis.data('type', 'remove').html('取消收藏').addClass('layui-btn-danger');
                     } else if (type === 'remove') {
@@ -170,7 +165,7 @@ layui.define('fly', function (exports) {
             var othis = $(this);
             layer.confirm('是否采纳该回答为最佳答案？', function (index) {
                 layer.close(index);
-                fly.json('/api/jieda-accept/', {
+                fly.json('/action/reply-accept', {
                     id: li.data('id')
                 }, function (res) {
                     if (res.status === 0) {
