@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>基于 layui 的极简社区页面模版</title>
+    <title>KBBS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="fly,layui,前端社区">
     <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
@@ -65,17 +65,18 @@
 
                 <div style="text-align: center">
                     <div class="laypage-main">
+                         <#if page gt 1>
+                         <a href="/topic?type=${type}&sort=${sort}&page=${page - 2}" class="laypage-next">上一页</a>
+                         </#if>
                         <span class="laypage-curr">${page}</span>
                     <#--<a href="/jie/page/2/">2</a>-->
                     <#--<a href="/jie/page/3/">3</a>-->
                     <#--<a href="/jie/page/4/">4</a>-->
                     <#--<a href="/jie/page/5/">5</a>-->
-                        <span>…</span>
-                        <a href="/topic?type=${type}&sort=${sort}&page=${lastPage}" class="laypage-last"
-                           title="尾页">尾页</a>
-                        <#if hasNext>
-                        <a href="/topic?type=${type}&sort=${sort}&page=${page + 1}"
-                           class="laypage-next">下一页</a>
+                        <#if totalPageNum gt 1 && hasNext>
+                            <a href="/topic?type=${type}&sort=${sort}&page=${page}" class="laypage-next">下一页</a>
+                            <a href="/topic?type=${type}&sort=${sort}&page=${totalPageNum - 1}" class="laypage-last"
+                               title="尾页">尾页</a>
                         </#if>
                     </div>
                 </div>
@@ -86,8 +87,8 @@
             <dl class="fly-panel fly-list-one">
                 <dt class="fly-panel-title">本周热议</dt>
                 <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
+                    <a href="">（这里的功能还没实现）</a>
+                    <span><i class="iconfont icon-pinglun1"></i> 666</span>
                 </dd>
 
                 <!-- 无数据时 -->
@@ -109,15 +110,8 @@
                 <h3 class="fly-panel-title">友情链接</h3>
                 <dl class="fly-panel-main">
                     <dd><a href="http://www.layui.com/" target="_blank">layui</a>
-                    <dd>
-                    <dd><a href="http://layim.layui.com/" target="_blank">WebIM</a>
-                    <dd>
-                    <dd><a href="http://layer.layui.com/" target="_blank">layer</a>
-                    <dd>
-                    <dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a>
-                    <dd>
-                    <dd>
-                        <a href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE"
+
+                        <a href="mailto:tiangao1102@163.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE"
                            class="fly-link">申请友链</a>
                     <dd>
                 </dl>

@@ -8,7 +8,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table
+@Table(indexes = [Index(name = "idx_user", columnList = "userId")])
 class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +47,5 @@ val TOPIC_TYPE = mapOf(1 to "提问", 2 to "分享", 3 to "讨论", 4 to "建议
 interface TopicRepository : PagingAndSortingRepository<Topic, Long> {
     fun findByTypeAndStatus(type: Int, status: Int, pageable: Pageable): Page<Topic>
     fun findByStatus(status: Int, pageable: Pageable): Page<Topic>
+    fun findByUserIdAndStatus(userId: Long, status: Int): List<Topic>
 }

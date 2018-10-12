@@ -21,6 +21,9 @@ class TopicController(val topicRepository: TopicRepository,
     val top = Sort.Order.desc("isTop")
     val scoreDesc = Sort.Order.desc("score")
 
+    /**
+     * 列表页  首页
+     */
     @GetMapping("/topic", "/")
     fun list(@RequestParam(defaultValue = "0") type: Int,
              @RequestParam(defaultValue = "0") sort: Int,
@@ -38,7 +41,7 @@ class TopicController(val topicRepository: TopicRepository,
         val userIds = topicPage.content.asSequence().map { it.userId }.toSet()
         val userMap = userMapOfUserIds(userIds)
 
-        model["lastPage"] = topicPage.number
+        model["totalPageNum"] = topicPage.totalPages
         model["hasNext"] = topicPage.hasNext()
         model["topics"] = topicPage.content.map {
             TopicDesc(it.id, TOPIC_TYPE[it.type]!!, it.title, it.isTop, it.isNice,
@@ -65,27 +68,64 @@ class TopicController(val topicRepository: TopicRepository,
         }
     }
 
+    /**
+     * 发布帖子页面
+     */
     @GetMapping("/topic/add")
     fun add() = "topic/add"
 
+    /**
+     * 编辑帖子页面
+     */
+    @GetMapping("/topic/{id}/edit")
+    fun edit(@PathVariable id: Long): ModelAndView {
+        val entity = topicRepository.findById(id)
+        if (!entity.isPresent) {
+            return ModelAndView("other/tips", mapOf("error" to "不存在的帖子"))
+        }
+        val topic = entity.get()
+        if (topic.status == 4) {
+            return ModelAndView("other/tips", mapOf("error" to "该贴已被删除"))
+        }
+        return ModelAndView("topic/edit", mapOf("topic" to entity.get()))
+    }
+
+
     val topicCopier = BeanCopier.create(TopicForm::class.java, Topic::class.java, false)!!
 
+    /**
+     * 发表编辑帖子表单处理
+     */
     @PostMapping("/topic")
     fun newTopic(@ModelAttribute topicForm: TopicForm): String {
-        val topic = Topic()
+
+        val topic = if (topicForm.id > 0) topicRepository.findById(topicForm.id).get() else Topic()
+
         topicCopier.copy(topicForm, topic, null)
+
         topic.userId = AuthUtil.currentUser().id
+        topic.lastModifyTime = Date()
 
         val topicId = topicRepository.save(topic).id
 
         return "redirect:/topic/$topicId"
     }
 
+    /**
+     * 帖子详情页面
+     */
     @GetMapping("/topic/{id}")
     fun getTopics(@PathVariable id: Long): ModelAndView {
         val map = mutableMapOf<String, Any>()
-        //TODO 处理不存在的异常
-        val topic = topicRepository.findById(id).get()
+
+        val entity = topicRepository.findById(id)
+        if (!entity.isPresent) {
+            return ModelAndView("other/tips", mapOf("error" to "不存在的帖子"))
+        }
+        val topic = entity.get()
+        if (topic.status == 4) {
+            return ModelAndView("other/tips", mapOf("error" to "该贴已被删除"))
+        }
         topic.readNum += 1
         topicRepository.save(topic)
 
@@ -94,7 +134,7 @@ class TopicController(val topicRepository: TopicRepository,
         map["type"] = topic.type
 
         val currentUser = AuthUtil.currentUser()
-        map["isAdmin"] = currentUser.authorities.contains("ADMIN")
+        map["isAdmin"] = AuthUtil.isAdmin()
 
         if (currentUser.id == topic.userId) {
             map["ofMine"] = true
@@ -120,6 +160,7 @@ class TopicController(val topicRepository: TopicRepository,
 
 
 class TopicForm {
+    var id = 0L
     var type = 0
     var title = ""
     var project = ""

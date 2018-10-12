@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Fly Template v3.0，基于 layui 的极简社区页面模版</title>
+    <title>KBBS - ${topic.title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="fly,layui,前端社区">
     <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
@@ -21,7 +21,8 @@
                 <h1>${topic.title}</h1>
                 <div class="fly-detail-info">
                     <#if topic.status == 1><span class="layui-badge">审核中</span></#if>
-                    <span class="layui-badge layui-bg-green fly-detail-column">动态</span>
+
+                    <#if topic.type == 6><span class="layui-badge layui-bg-green fly-detail-column">动态</span></#if>
                 <#--<span class="layui-badge" style="background-color: #999;">未结</span>-->
                     <#if topic.status == 9>
                         <span class="layui-badge" style="background-color: #5FB878;">已结</span>
