@@ -130,7 +130,9 @@
                                     <span type="edit">编辑</span>
                                     <span type="del">删除</span>
                                 </#if>
-                            <#if topic.userId == Session.user.id && !reply.data.helpful><span class="jieda-accept" type="accept">采纳</span></#if>
+                            <#if topic.userId == Session.user.id && topic.userId != reply.user.id && !reply.data.helpful>
+                                <span class="jieda-accept" type="accept">采纳</span>
+                            </#if>
                             </div>
                         </div>
                     </li>
