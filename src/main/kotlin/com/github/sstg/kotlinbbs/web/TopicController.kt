@@ -87,6 +87,9 @@ class TopicController(val topicRepository: TopicRepository,
         if (topic.status == 4) {
             return ModelAndView("other/tips", mapOf("error" to "该贴已被删除"))
         }
+        if (topic.userId != AuthUtil.currentUser().id) {
+            return ModelAndView("other/tips", mapOf("error" to "你不是该贴的作者，不能编辑"))
+        }
         return ModelAndView("topic/edit", mapOf("topic" to entity.get()))
     }
 
