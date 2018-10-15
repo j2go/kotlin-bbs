@@ -25,7 +25,7 @@ class UserInfo : UserDetails {
     var authorities = ""
     var passwd = ""
 
-    var avatorUrl = ""
+    var avatorUrl = "/images/avatar/11.jpg"
     var level = 1
     var experience = 666
     var createTime = Date()
