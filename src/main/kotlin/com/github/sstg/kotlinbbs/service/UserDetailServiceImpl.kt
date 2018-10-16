@@ -6,6 +6,7 @@ import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.web.context.request.RequestAttributes.SCOPE_SESSION
 import org.springframework.web.context.request.RequestContextHolder
@@ -14,16 +15,14 @@ import org.springframework.web.context.request.RequestContextHolder
 class UserDetailServiceImpl(val userInfoRepository: UserInfoRepository) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
-        return userInfoRepository.findByEmail(email)
+        return userInfoRepository.findByEmail(email) ?: throw UsernameNotFoundException("email 不存在")
     }
 
     @EventListener
     fun handleLoginSuccess(event: InteractiveAuthenticationSuccessEvent) {
         var details = event.authentication.principal
         if (details is UserInfo) {
-            val requestAttributes = RequestContextHolder.currentRequestAttributes()
-            requestAttributes.setAttribute("user", details, SCOPE_SESSION)
-//            requestAttributes.setAttribute("userid", details.id, SCOPE_SESSION)
+            RequestContextHolder.currentRequestAttributes().setAttribute("user", details, SCOPE_SESSION)
         }
     }
 }

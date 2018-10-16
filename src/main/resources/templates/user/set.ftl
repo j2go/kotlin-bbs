@@ -58,7 +58,9 @@
             </ul>
             <div class="layui-tab-content" style="padding: 20px 0;">
                 <div class="layui-form layui-form-pane layui-tab-item layui-show">
-                    <form method="post">
+                    <form action="/user/info" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <#-- 暂不设置可修改邮箱
                         <div class="layui-form-item">
                             <label for="L_email" class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
@@ -69,23 +71,24 @@
                                                                                                style="font-size: 12px; color: #4f99cf;">重新验证邮箱</a>。
                             </div>
                         </div>
+                        -->
                         <div class="layui-form-item">
                             <label for="L_username" class="layui-form-label">昵称</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="L_username" name="username" required lay-verify="required"
-                                       autocomplete="off" value="" class="layui-input">
+                                <input type="text" id="L_username" name="name" required lay-verify="required"
+                                       autocomplete="off" value="${Session.user.name}" class="layui-input">
                             </div>
                             <div class="layui-inline">
                                 <div class="layui-input-inline">
-                                    <input type="radio" name="sex" value="0" checked title="男">
-                                    <input type="radio" name="sex" value="1" title="女">
+                                    <input type="radio" name="sex" value="男" <#if Session.user.sex == "男" >checked</#if> title="男">
+                                    <input type="radio" name="sex" value="女" <#if Session.user.sex == "女" >checked</#if>title="女">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label for="L_city" class="layui-form-label">城市</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="L_city" name="city" autocomplete="off" value=""
+                                <input type="text" id="L_city" name="city" autocomplete="off" value="${Session.user.city}"
                                        class="layui-input">
                             </div>
                         </div>
@@ -93,7 +96,7 @@
                             <label for="L_sign" class="layui-form-label">签名</label>
                             <div class="layui-input-block">
                                 <textarea placeholder="随便写些什么刷下存在感" id="L_sign" name="sign" autocomplete="off"
-                                          class="layui-textarea" style="height: 80px;"></textarea>
+                                          class="layui-textarea" style="height: 80px;">${Session.user.sign}</textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -108,7 +111,7 @@
                             <button type="button" class="layui-btn upload-img">
                                 <i class="layui-icon">&#xe67c;</i>上传头像
                             </button>
-                            <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+                            <img src="${Session.user.avatorUrl}">
                             <span class="loading"></span>
                         </div>
                     </div>
