@@ -9,7 +9,10 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table
+@Table(indexes = [
+    Index(name = "idx_name", columnList = "name", unique = true),
+    Index(name = "idx_email", columnList = "email", unique = true)]
+)
 class UserInfo : UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +21,8 @@ class UserInfo : UserDetails {
     var email = ""
     var name = ""
     var sex = "男"
+    var sign = ""
+    var city = ""
     var enable = true
     var credentialsNonExpired = true
     var accountNonExpired = true
@@ -49,6 +54,7 @@ class UserInfo : UserDetails {
 
 @Repository
 interface UserInfoRepository : CrudRepository<UserInfo, Long> {
-    fun findByEmail(email: String): UserInfo
+    fun findByEmail(email: String): UserInfo?
+    fun findByName(email: String): UserInfo?
     fun findByIdIn(ids: Collection<Long>): List<UserInfo>
 }

@@ -7,10 +7,7 @@ import com.github.sstg.kotlinbbs.domain.UserInfoRepository
 import com.github.sstg.kotlinbbs.util.AuthUtil
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import java.util.*
 
@@ -85,6 +82,21 @@ class UserController(val userInfoRepository: UserInfoRepository,
                 .sortedByDescending { it.time }.toList()
         return ModelAndView("user/index", model)
     }
+
+    @PostMapping("/info")
+    @ResponseBody
+    fun updateInfo(@RequestParam name: String,
+                   @RequestParam sex: String,
+                   @RequestParam city: String,
+                   @RequestParam sign: String): ActionResult {
+        val currentUser = AuthUtil.currentUser()
+        currentUser.name = name
+        currentUser.sex = sex
+        currentUser.city = city
+        currentUser.sign = sign
+        userInfoRepository.save(currentUser)
+        return ActionResult(0, "")
+    }
 }
 
-data class Collection(val id:Long, val title: String, val time: Date)
+data class Collection(val id: Long, val title: String, val time: Date)
