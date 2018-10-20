@@ -21,4 +21,5 @@
 - Layui.js
 
 # Docker 安装
-docker run -d --name kbbs -e mysql_host=xxxx -e mysql_p=xxxx -80:8080 stiangao/kbbs
+
+`docker run -d --name kbbs -e mysql_host=xxxx -e mysql_p=xxxx -80:8080 stiangao/kbbs`
