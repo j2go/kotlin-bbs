@@ -34,18 +34,18 @@ class Topic {
     var isNice = false
 
     // 1 有效，4 删除
-    var status = 1
+    var status = Status.SHOW
     // 热度评分
     var score = 0
     var createTime = Date()
     var lastModifyTime = Date()
 }
 
-val TOPIC_TYPE = mapOf(1 to "提问", 2 to "分享", 3 to "讨论", 4 to "建议", 5 to "公告", 6 to "动态")
 
 @Repository
 interface TopicRepository : PagingAndSortingRepository<Topic, Long> {
-    fun findByTypeAndStatus(type: Int, status: Int, pageable: Pageable): Page<Topic>
     fun findByStatus(status: Int, pageable: Pageable): Page<Topic>
+    fun findByTypeAndStatus(type: Int, status: Int, pageable: Pageable): Page<Topic>
+    fun findByTypeAndUserIdAndStatus(type: Int, userId: Long, status: Int, pageable: Pageable): Page<Topic>
     fun findByUserIdAndStatus(userId: Long, status: Int): List<Topic>
 }

@@ -81,7 +81,7 @@
                             <div class="layui-inline">
                                 <div class="layui-input-inline">
                                     <input type="radio" name="sex" value="男" <#if Session.user.sex == "男" >checked</#if> title="男">
-                                    <input type="radio" name="sex" value="女" <#if Session.user.sex == "女" >checked</#if>title="女">
+                                    <input type="radio" name="sex" value="女" <#if Session.user.sex == "女" >checked</#if> title="女">
                                 </div>
                             </div>
                         </div>

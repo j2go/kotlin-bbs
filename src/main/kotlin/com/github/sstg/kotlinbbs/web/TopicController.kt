@@ -44,7 +44,7 @@ class TopicController(val topicRepository: TopicRepository,
         model["totalPageNum"] = topicPage.totalPages
         model["hasNext"] = topicPage.hasNext()
         model["topics"] = topicPage.content.map {
-            TopicDesc(it.id, TOPIC_TYPE[it.type]!!, it.title, it.isTop, it.isNice,
+            TopicDesc(it.id, TopicType.getStr(it.type), it.title, it.isTop, it.isNice,
                     userMap[it.userId]!!, it.createTime, it.experience, it.replyNum)
         }
         return ModelAndView("topic/index", model)

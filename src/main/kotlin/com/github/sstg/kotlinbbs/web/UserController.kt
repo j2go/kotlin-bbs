@@ -1,10 +1,9 @@
 package com.github.sstg.kotlinbbs.web
 
-import com.github.sstg.kotlinbbs.domain.TopicRepository
-import com.github.sstg.kotlinbbs.domain.UserCollectRepository
-import com.github.sstg.kotlinbbs.domain.UserInfo
-import com.github.sstg.kotlinbbs.domain.UserInfoRepository
+import com.github.sstg.kotlinbbs.domain.*
 import com.github.sstg.kotlinbbs.util.AuthUtil
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -15,6 +14,7 @@ import java.util.*
 @RequestMapping("/user")
 class UserController(val userInfoRepository: UserInfoRepository,
                      val topicRepository: TopicRepository,
+                     val topicReplyRepository: TopicReplyRepository,
                      val userCollectRepository: UserCollectRepository) {
 
     /**
@@ -48,7 +48,23 @@ class UserController(val userInfoRepository: UserInfoRepository,
      * 我的主页
      */
     @GetMapping("/home", "")
-    fun home() = "user/home"
+    fun home(): ModelAndView {
+
+        val model = mutableMapOf<String, Any>()
+        model["isAdmin"] = AuthUtil.isAdmin()
+
+        val curUserId = AuthUtil.currentUser().id
+        val page = PageRequest.of(0, 5, Sort.by("createTime").descending())
+        val topics = topicRepository.findByTypeAndUserIdAndStatus(TopicType.QUESTION, curUserId, Status.SHOW, page).content
+        model["topics"] = topics
+
+        val replies = topicReplyRepository.findByUserIdAndStatus(curUserId, Status.SHOW, page).content
+        val topicIds = replies.map { it.topicId }
+        val topicIdTitleMap = topicRepository.findAllById(topicIds).map { it.id to it.title }.toMap()
+        model["replies"] = replies.map { ReplyDesc(it.topicId, topicIdTitleMap[it.topicId]!!, it.content, it.createTime) }
+
+        return ModelAndView("user/home", model)
+    }
 
     /**
      * 个人信息设置页
@@ -100,3 +116,4 @@ class UserController(val userInfoRepository: UserInfoRepository,
 }
 
 data class Collection(val id: Long, val title: String, val time: Date)
+data class ReplyDesc(val topicId: Long, val title: String, val content: String, val time: Date)

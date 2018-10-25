@@ -21,8 +21,8 @@ class UserInfo : UserDetails {
     var email = ""
     var name = ""
     var sex = "男"
-    var sign = ""
-    var city = ""
+    var sign = "这个人很懒，没有签名"
+    var city = "未知"
     var enable = true
     var credentialsNonExpired = true
     var accountNonExpired = true
