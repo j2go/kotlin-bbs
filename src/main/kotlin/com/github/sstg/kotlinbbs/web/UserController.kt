@@ -17,12 +17,21 @@ class UserController(val userInfoRepository: UserInfoRepository,
                      val topicRepository: TopicRepository,
                      val userCollectRepository: UserCollectRepository) {
 
+    /**
+     * 用户登录页
+     */
     @GetMapping("/login")
     fun login() = "user/login"
 
+    /**
+     * 用户注册页
+     */
     @GetMapping("/reg")
     fun reg() = "user/reg"
 
+    /**
+     * 提交注册信息
+     */
     @PostMapping("/reg")
     fun register(@RequestParam email: String, @RequestParam name: String, @RequestParam pass: String): String {
         val userInfo = UserInfo()
@@ -35,15 +44,27 @@ class UserController(val userInfoRepository: UserInfoRepository,
         return "redirect:/"
     }
 
+    /**
+     * 我的主页
+     */
     @GetMapping("/home", "")
     fun home() = "user/home"
 
+    /**
+     * 个人信息设置页
+     */
     @GetMapping("/setting")
     fun set() = "user/set"
 
+    /**
+     * 我的消息
+     */
     @GetMapping("/message")
     fun message() = "user/message"
 
+    /**
+     * 我发的贴 & 我收藏的贴
+     */
     @GetMapping("/index")
     fun index(): ModelAndView {
         val model = mutableMapOf<String, Any>()
