@@ -1,7 +1,7 @@
 # 简介
 **kotlin bbs**
 
-使用 layui 的社区模板，springboot 全家桶，kotlin 语言实现，目标是尽量少的代码
+使用 layui 的社区模板，springboot ，kotlin 语言实现，目标是尽量少的代码
 
 *简洁而不简单*
 
@@ -22,4 +22,4 @@
 
 # Docker 安装
 
-`docker run -d --name kbbs -e mysql_host=xxxx -e mysql_p=xxxx -80:8080 stiangao/kbbs`
+`docker run -d --name kbbs -e mysql_host=xxxx -e mysql_port=33066 -e mysql_u=root -e mysql_p=xxxx -80:8080 stiangao/kbbs`
