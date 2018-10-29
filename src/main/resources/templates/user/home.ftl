@@ -76,7 +76,7 @@
                         <li>
                             <p>
                                 <span>${reply.time}</span>
-                                在<a href="/topic/${reply.topicId}" target="_blank">${reply.title}</a>中回答：
+                                ${reply.content}
                             </p>
                             <div class="home-dacontent">
                                 ${reply.content}

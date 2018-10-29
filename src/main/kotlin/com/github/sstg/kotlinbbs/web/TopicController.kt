@@ -1,6 +1,7 @@
 package com.github.sstg.kotlinbbs.web
 
 import com.github.sstg.kotlinbbs.domain.*
+import com.github.sstg.kotlinbbs.service.MessageService
 import com.github.sstg.kotlinbbs.util.AuthUtil
 import org.springframework.cglib.beans.BeanCopier
 import org.springframework.data.domain.Page
@@ -15,7 +16,8 @@ import java.util.*
 class TopicController(val topicRepository: TopicRepository,
                       val userInfoRepository: UserInfoRepository,
                       val topicReplyRepository: TopicReplyRepository,
-                      val userLikeRepository: UserLikeRepository) {
+                      val userLikeRepository: UserLikeRepository,
+                      val messageService: MessageService) {
 
     val timeDesc = Sort.Order.desc("createTime")
     val top = Sort.Order.desc("isTop")
@@ -93,7 +95,6 @@ class TopicController(val topicRepository: TopicRepository,
         return ModelAndView("topic/edit", mapOf("topic" to entity.get()))
     }
 
-
     val topicCopier = BeanCopier.create(TopicForm::class.java, Topic::class.java, false)!!
 
     /**
@@ -118,8 +119,10 @@ class TopicController(val topicRepository: TopicRepository,
      * 帖子详情页面
      */
     @GetMapping("/topic/{id}")
-    fun getTopics(@PathVariable id: Long): ModelAndView {
-        val map = mutableMapOf<String, Any>()
+    fun getTopics(@PathVariable id: Long, @RequestParam(required = false) messageId: Long?): ModelAndView {
+        messageId?.let { messageService.read(it) }
+
+        val model = mutableMapOf<String, Any>()
 
         val entity = topicRepository.findById(id)
         if (!entity.isPresent) {
@@ -132,32 +135,32 @@ class TopicController(val topicRepository: TopicRepository,
         topic.readNum += 1
         topicRepository.save(topic)
 
-        map["topic"] = topic
-        map["sort"] = 0
-        map["type"] = topic.type
+        model["topic"] = topic
+        model["sort"] = 0
+        model["type"] = topic.type
 
         val currentUser = AuthUtil.currentUser()
-        map["isAdmin"] = AuthUtil.isAdmin()
+        model["isAdmin"] = AuthUtil.isAdmin()
 
         if (currentUser.id == topic.userId) {
-            map["ofMine"] = true
-            map["author"] = currentUser
+            model["ofMine"] = true
+            model["author"] = currentUser
         } else {
-            map["ofMine"] = false
-            map["author"] = userInfoRepository.findById(topic.userId).get()
+            model["ofMine"] = false
+            model["author"] = userInfoRepository.findById(topic.userId).get()
         }
 
         var replies = topicReplyRepository.findByTopicIdAndStatus(topic.id, 1)
-        map["replyNum"] = replies.size
+        model["replyNum"] = replies.size
 
         val userIds = replies.asSequence().map { it.userId }.toSet()
         val userMap = userMapOfUserIds(userIds)
 
         val likedReplySet = userLikeRepository.findByUserIdAndType(currentUser.id, 2).asSequence().map { it.targetId }.toSet()
 
-        map["replies"] = replies.map { ReplyDto(it, userMap[it.userId]!!, likedReplySet.contains(it.id), it.userId == currentUser.id) }
+        model["replies"] = replies.map { ReplyDto(it, userMap[it.userId]!!, likedReplySet.contains(it.id), it.userId == currentUser.id) }
 
-        return ModelAndView("topic/detail", map)
+        return ModelAndView("topic/detail", model)
     }
 }
 

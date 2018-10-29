@@ -15,7 +15,8 @@ import java.util.*
 class UserController(val userInfoRepository: UserInfoRepository,
                      val topicRepository: TopicRepository,
                      val topicReplyRepository: TopicReplyRepository,
-                     val userCollectRepository: UserCollectRepository) {
+                     val userCollectRepository: UserCollectRepository,
+                     val messageRepository: MessageRepository) {
 
     /**
      * 用户登录页
@@ -76,7 +77,13 @@ class UserController(val userInfoRepository: UserInfoRepository,
      * 我的消息
      */
     @GetMapping("/message")
-    fun message() = "user/message"
+    fun message(): ModelAndView {
+        val model = mutableMapOf<String, Any>()
+
+        val currentUserId = AuthUtil.currentUser().id
+        model["messages"] = messageRepository.findByUserIdAndReaded(currentUserId, false)
+        return ModelAndView("user/message", model)
+    }
 
     /**
      * 我发的贴 & 我收藏的贴

@@ -13,6 +13,9 @@ class Message {
     var id = 0L
 
     var userId = 0L
+    var fromUserId = 0L
+    var topicId = 0L
+    var source = 0
     var content = ""
     var readed = false
 
@@ -21,9 +24,15 @@ class Message {
     var expireTime = Date()
 }
 
+object MessageSource {
+    const val USER = 1
+    const val SYSTEM = 2
+}
+
 @Repository
 interface MessageRepository : CrudRepository<Message, Long> {
     fun findByUserId(userId: Long): List<Message>
+
     fun findByUserIdAndReaded(userId: Long, read: Boolean): List<Message>
 
     fun countByUserIdAndReaded(userId: Long, read: Boolean): Long

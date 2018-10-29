@@ -3,7 +3,9 @@ package com.github.sstg.kotlinbbs.web
 import com.github.sstg.kotlinbbs.domain.TopicReply
 import com.github.sstg.kotlinbbs.domain.TopicReplyRepository
 import com.github.sstg.kotlinbbs.domain.TopicRepository
+import com.github.sstg.kotlinbbs.event.TopicReplyEvent
 import com.github.sstg.kotlinbbs.util.AuthUtil
+import org.springframework.context.ApplicationContext
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -12,7 +14,8 @@ import java.util.*
 
 @RestController
 class ReplyController(val topicRepository: TopicRepository,
-                      val topicReplyRepository: TopicReplyRepository) {
+                      val topicReplyRepository: TopicReplyRepository,
+                      val applicationContext: ApplicationContext) {
 
     @PostMapping("/reply")
     fun replyTopic(@RequestParam id: Long, @RequestParam content: String): ActionResult {
@@ -25,6 +28,8 @@ class ReplyController(val topicRepository: TopicRepository,
         reply.content = content
         reply.userId = AuthUtil.currentUser().id
         topicReplyRepository.save(reply)
+
+        applicationContext.publishEvent(TopicReplyEvent(topic, reply))
 
         return ActionResult(0, "")
     }
