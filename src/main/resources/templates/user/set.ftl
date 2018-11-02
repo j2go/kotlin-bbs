@@ -88,7 +88,7 @@
                         <div class="layui-form-item">
                             <label for="L_city" class="layui-form-label">城市</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="L_city" name="city" autocomplete="off" value="${Session.user.city}"
+                                <input type="text" id="L_city" name="city" autocomplete="off" value="${Session.user.city!}"
                                        class="layui-input">
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                             <label for="L_sign" class="layui-form-label">签名</label>
                             <div class="layui-input-block">
                                 <textarea placeholder="随便写些什么刷下存在感" id="L_sign" name="sign" autocomplete="off"
-                                          class="layui-textarea" style="height: 80px;">${Session.user.sign}</textarea>
+                                          class="layui-textarea" style="height: 80px;">${Session.user.sign!}</textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">

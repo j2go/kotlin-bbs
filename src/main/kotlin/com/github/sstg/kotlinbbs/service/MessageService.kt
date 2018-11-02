@@ -18,7 +18,8 @@ class MessageService(val messageRepository: MessageRepository,
     @Async
     fun handleReply(event: TopicReplyEvent) {
         val topic = event.topic
-        if (AuthUtil.currentUser().id == topic.userId) {
+        val reply = event.reply
+        if (reply.userId == topic.userId) {
             return
         }
         val message = Message()
@@ -28,7 +29,6 @@ class MessageService(val messageRepository: MessageRepository,
         message.topicId = topic.id
         message.userId = topic.userId
 
-        val reply = event.reply
         message.fromUserId = reply.userId
 
         messageRepository.save(message)

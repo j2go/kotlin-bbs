@@ -259,7 +259,7 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
   }
 
   //提交成功后刷新
-  fly.form['set-mine'] = function(data, required){
+  fly.form['/user/info'] = function(field, form){
     layer.msg('修改成功', {
       icon: 1
       ,time: 1000
@@ -267,7 +267,7 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
     }, function(){
       location.reload();
     });
-  }
+  };
 
   //帐号绑定
   $('.acc-unbind').on('click', function(){

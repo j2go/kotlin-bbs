@@ -30,8 +30,8 @@
 
     <p class="fly-home-info">
         <i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">${Session.user.experience} 飞吻</span>
-        <i class="iconfont icon-shijian"></i><span>${Session.user.createTime} 加入</span>
-        <i class="iconfont icon-chengshi"></i><span>${Session.user.city}</span>
+        <i class="iconfont icon-shijian"></i><span>${Session.user.createTime!} 加入</span>
+        <i class="iconfont icon-chengshi"></i><span>${Session.user.city!}</span>
     </p>
 
     <p class="fly-home-sign">${Session.user.sign}</p>
