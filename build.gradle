@@ -20,7 +20,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.github.sstg'
-version = '0.0.1'
+version = '0.0.2'
 sourceCompatibility = 1.8
 compileKotlin {
 	kotlinOptions {
