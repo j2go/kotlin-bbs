@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>KBBS - 编辑帖子</title>
+    <title>你好大学 - 编辑问题</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/global.css">

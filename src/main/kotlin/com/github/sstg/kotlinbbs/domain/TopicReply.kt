@@ -1,7 +1,6 @@
 package com.github.sstg.kotlinbbs.domain
 
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -33,5 +32,5 @@ class TopicReply {
 interface TopicReplyRepository : PagingAndSortingRepository<TopicReply, Long> {
     fun findByTopicId(id: Long): List<TopicReply>
     fun findByTopicIdAndStatus(id: Long, status: Int): List<TopicReply>
-    fun findByUserIdAndStatus(userId: Long, status: Int, pageable: Pageable): Page<TopicReply>
+    fun findByUserIdAndStatus(userId: Long, status: Int, pageable: org.springframework.data.domain.Pageable): Page<TopicReply>
 }

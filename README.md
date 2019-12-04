@@ -22,4 +22,4 @@
 
 # Docker 安装
 
-`docker run -d --name kbbs -e mysql_host=xxxx -e mysql_port=33066 -e mysql_u=root -e mysql_p=xxxx -80:8080 stiangao/kbbs`
+`docker run -d --name kbbs -e mysql_host=172.17.0.2 -e mysql_port=3306 -e mysql_u=root -e mysql_p=123 -6080:8080 stiangao/kbbs`

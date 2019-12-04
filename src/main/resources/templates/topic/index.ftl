@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>学问社区 首页</title>
+    <title>你好大学 首页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="fly,layui,前端社区">
     <link rel="stylesheet" href="/layui/css/layui.css">
@@ -98,10 +98,11 @@
 
             <div class="fly-panel">
                 <div class="fly-panel-title">
-                    这里可作为广告区域
+                    开发合作
                 </div>
                 <div class="fly-panel-main">
-                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">虚席以待</a>
+                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">华东理工大学</a>
+                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">华东师范大学</a>
                 </div>
             </div>
 
