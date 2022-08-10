@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse
 @RequestMapping("/error")
 class MyErrorController : ErrorController {
 
-    override fun getErrorPath() = "/error"
+    fun getErrorPath() = "/error"
 
     @GetMapping(produces = ["text/html"])
     fun errorHtml(rep: HttpServletResponse) = if (rep.status == 404) "other/404" else "other/tips"
-    
+
 }
