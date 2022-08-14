@@ -22,7 +22,10 @@ class Topic {
     var project = ""
     var version = ""
     var browser = ""
+
+    @Column(columnDefinition = "TEXT")
     var content = ""
+
     var experience = 0
 
     var readNum = 0

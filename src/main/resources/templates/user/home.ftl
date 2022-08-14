@@ -11,7 +11,7 @@
 <#include "../common/header.ftl"/>
 
 <div class="fly-home fly-panel" style="background-image: url();">
-    <img src="${Session.user.avatorUrl}" alt="${Session.user.name}">
+    <img src="${Session.user.avatar}" alt="${Session.user.name}">
     <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
     <h1>
         ${Session.user.name}

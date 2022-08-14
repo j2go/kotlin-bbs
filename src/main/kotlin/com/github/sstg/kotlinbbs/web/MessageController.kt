@@ -12,14 +12,14 @@ class MessageController(val messageRepository: MessageRepository) {
     fun num(@RequestParam time: Long): MessageResult {
         val userId = AuthUtil.currentUser().id
 
-        return MessageResult(0, messageRepository.countByUserIdAndReaded(userId, false))
+        return MessageResult(0, messageRepository.countByUserIdAndReadied(userId, false))
     }
 
     @PostMapping("/read")
     fun read(): MessageResult {
         val userId = AuthUtil.currentUser().id
 
-        val unReadNum = messageRepository.countByUserIdAndReaded(userId, false)
+        val unReadNum = messageRepository.countByUserIdAndReadied(userId, false)
         return if (unReadNum > 0) MessageResult(0, unReadNum) else MessageResult(-1, 0)
     }
 
@@ -27,7 +27,7 @@ class MessageController(val messageRepository: MessageRepository) {
     fun remove(@PathVariable id: Long): ActionResult {
         val message = messageRepository.findById(id)
         return if (message.isPresent) {
-            message.get().readed = true
+            message.get().readied = true
             messageRepository.save(message.get())
             ActionResult(0, "")
         } else

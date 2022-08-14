@@ -111,7 +111,7 @@
                             <button type="button" class="layui-btn upload-img">
                                 <i class="layui-icon">&#xe67c;</i>上传头像
                             </button>
-                            <img src="${Session.user.avatorUrl}">
+                            <img src="${Session.user.avatar}">
                             <span class="loading"></span>
                         </div>
                     </div>

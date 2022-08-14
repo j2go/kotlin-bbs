@@ -201,7 +201,7 @@
     layui.cache.user = {
         username: '${Session.user.name}'
         , uid: ${Session.user.id}
-        , avatar: '${Session.user.avatorUrl}'
+        , avatar: '${Session.user.avatar}'
         , experience: 83
         , sex: '${Session.user.sex}'
     };

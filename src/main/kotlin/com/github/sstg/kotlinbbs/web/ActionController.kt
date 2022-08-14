@@ -14,7 +14,7 @@ class ActionController(val topicRepository: TopicRepository,
                        val topicReplyRepository: TopicReplyRepository,
                        val userLikeRepository: UserLikeRepository,
                        val userCollectRepository: UserCollectRepository,
-                       val userInfoRepository: UserInfoRepository) {
+                       val userRepository: UserRepository) {
 
     @PostMapping("/like")
     fun like(@RequestParam type: Int, @RequestParam id: Long): ActionResult {
@@ -121,15 +121,15 @@ class ActionController(val topicRepository: TopicRepository,
         if (reply.userId == topic.userId) {
             return ActionResult(-98, "不能采纳自己的答案")
         }
-        val replyUser = userInfoRepository.findById(reply.userId).get()
+        val replyUser = userRepository.findById(reply.userId).get()
         reply.helpful = true
         topicReplyRepository.save(reply)
 
         curUser.experience -= topic.experience
         replyUser.experience += topic.experience
 
-        userInfoRepository.save(curUser)
-        userInfoRepository.save(replyUser)
+        userRepository.save(curUser)
+        userRepository.save(replyUser)
         return ActionResult(0, "")
     }
 }

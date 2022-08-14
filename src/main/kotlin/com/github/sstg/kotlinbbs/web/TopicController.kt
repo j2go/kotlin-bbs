@@ -4,7 +4,6 @@ import com.github.sstg.kotlinbbs.domain.*
 import com.github.sstg.kotlinbbs.service.MessageService
 import com.github.sstg.kotlinbbs.util.AuthUtil
 import org.springframework.beans.BeanUtils
-import org.springframework.cglib.beans.BeanCopier
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -16,7 +15,7 @@ import java.util.*
 @Controller
 class TopicController(
     val topicRepository: TopicRepository,
-    val userInfoRepository: UserInfoRepository,
+    val userRepository: UserRepository,
     val topicReplyRepository: TopicReplyRepository,
     val userLikeRepository: UserLikeRepository,
     val messageService: MessageService
@@ -60,14 +59,10 @@ class TopicController(
     }
 
     private fun userMapOfUserIds(userIds: Set<Long>) =
-        userInfoRepository.findByIdIn(userIds).map { it.id to it }.toMap()
+        userRepository.findByIdIn(userIds).associateBy { it.id }
 
-    private fun pageRequestOfSort(sort: Int, page: Int, size: Int): PageRequest {
-        return if (sort == 0)
-            PageRequest.of(page, size, Sort.by(topDesc, timeDesc))
-        else
-            PageRequest.of(page, size, Sort.by(topDesc, scoreDesc))
-    }
+    private fun pageRequestOfSort(sort: Int, page: Int, size: Int) =
+        PageRequest.of(page, size, Sort.by(topDesc, if (sort == 0) timeDesc else scoreDesc))
 
     private fun topicPageOfType(type: Int, pageRequest: PageRequest): Page<Topic> {
         return if (type > 0) {
@@ -106,7 +101,7 @@ class TopicController(
      * 发表编辑帖子表单处理
      */
     @PostMapping("/topic")
-    fun newTopic(@ModelAttribute topicForm: TopicForm): String {
+    fun postTopic(@ModelAttribute topicForm: TopicForm): String {
 
         val topic = if (topicForm.id > 0) topicRepository.findById(topicForm.id).get() else Topic()
 
@@ -152,10 +147,10 @@ class TopicController(
             model["author"] = currentUser
         } else {
             model["ofMine"] = false
-            model["author"] = userInfoRepository.findById(topic.userId).get()
+            model["author"] = userRepository.findById(topic.userId).get()
         }
 
-        var replies = topicReplyRepository.findByTopicIdAndStatus(topic.id, 1)
+        val replies = topicReplyRepository.findByTopicIdAndStatus(topic.id, 1)
         model["replyNum"] = replies.size
 
         val userIds = replies.asSequence().map { it.userId }.toSet()
@@ -189,7 +184,7 @@ class TopicForm {
     var experience = 0
 }
 
-data class ReplyDto(val data: TopicReply, val user: UserInfo, val liked: Boolean, val canEdit: Boolean)
+data class ReplyDto(val data: TopicReply, val user: User, val liked: Boolean, val canEdit: Boolean)
 
 data class TopicDesc(
     val id: Long,
@@ -197,7 +192,7 @@ data class TopicDesc(
     val title: String,
     val isTop: Boolean,
     val isNice: Boolean,
-    val user: UserInfo,
+    val user: User,
     val createTime: Date,
     val experience: Int,
     val replyNum: Int

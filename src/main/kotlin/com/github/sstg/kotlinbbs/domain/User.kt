@@ -9,11 +9,12 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(indexes = [
-    Index(name = "idx_name", columnList = "name", unique = true),
-    Index(name = "idx_email", columnList = "email", unique = true)]
+@Table(
+    indexes = [
+        Index(name = "idx_name", columnList = "name", unique = true),
+        Index(name = "idx_email", columnList = "email", unique = true)]
 )
-class UserInfo : UserDetails {
+class User : UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id = 0L
@@ -23,14 +24,11 @@ class UserInfo : UserDetails {
     var sex = "男"
     var sign = "这个人很懒，没有签名"
     var city = "未知"
-    var enable = true
-    var credentialsNonExpired = true
-    var accountNonExpired = true
-    var accountNonLocked = true
+    var status = 0b00001111
     var authorities = ""
     var passwd = ""
 
-    var avatorUrl = "/images/avatar/11.jpg"
+    var avatar = "/images/avatar/11.jpg"
     var level = 1
     var experience = 666
     var createTime = Date()
@@ -39,22 +37,22 @@ class UserInfo : UserDetails {
         return authorities.split(",").map { SimpleGrantedAuthority(it) }
     }
 
-    override fun isEnabled() = enable
+    override fun isEnabled() = (status and 1 > 0)
 
     override fun getUsername() = email
 
-    override fun isCredentialsNonExpired() = credentialsNonExpired
+    override fun isCredentialsNonExpired() = (status and 2 > 0)
+
+    override fun isAccountNonExpired() = (status and 4 > 0)
+
+    override fun isAccountNonLocked() = (status and 8 > 0)
 
     override fun getPassword() = passwd
-
-    override fun isAccountNonExpired() = accountNonExpired
-
-    override fun isAccountNonLocked() = accountNonLocked
 }
 
 @Repository
-interface UserInfoRepository : CrudRepository<UserInfo, Long> {
-    fun findByEmail(email: String): UserInfo?
-    fun findByName(email: String): UserInfo?
-    fun findByIdIn(ids: Collection<Long>): List<UserInfo>
+interface UserRepository : CrudRepository<User, Long> {
+    fun findByEmail(email: String): User?
+    fun findByName(email: String): User?
+    fun findByIdIn(ids: Collection<Long>): List<User>
 }

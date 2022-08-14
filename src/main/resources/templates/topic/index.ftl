@@ -24,7 +24,7 @@
                 <#list topics as topic >
                     <li>
                         <a href="/user/home/${topic.user.id}" class="fly-avatar">
-                            <img src="${topic.user.avatorUrl}"
+                            <img src="${topic.user.avatar}"
                                  alt="${topic.user.name}">
                         </a>
                         <h2>
@@ -101,8 +101,8 @@
                     开发合作
                 </div>
                 <div class="fly-panel-main">
-                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">华东理工大学</a>
-                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">华东师范大学</a>
+                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">虚席以待</a>
+                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">虚席以待</a>
                 </div>
             </div>
 
@@ -129,7 +129,7 @@
     layui.cache.user = {
         username: '${Session.user.name}'
         , uid: ${Session.user.id}
-        , avatar: '${Session.user.avatorUrl}'
+        , avatar: '${Session.user.avatar}'
         , experience: 83
         , sex: '${Session.user.sex}'
     };

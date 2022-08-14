@@ -17,7 +17,7 @@ class Message {
     var topicId = 0L
     var source = 0
     var content = ""
-    var readed = false
+    var readied = false
 
     var createTime = Date()
 
@@ -33,7 +33,7 @@ object MessageSource {
 interface MessageRepository : CrudRepository<Message, Long> {
     fun findByUserId(userId: Long): List<Message>
 
-    fun findByUserIdAndReaded(userId: Long, read: Boolean): List<Message>
+    fun findByUserIdAndReadied(userId: Long, read: Boolean): List<Message>
 
-    fun countByUserIdAndReaded(userId: Long, read: Boolean): Long
+    fun countByUserIdAndReadied(userId: Long, read: Boolean): Long
 }

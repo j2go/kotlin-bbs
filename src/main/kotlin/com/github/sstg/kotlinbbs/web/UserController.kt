@@ -12,7 +12,7 @@ import java.util.*
 
 @Controller
 @RequestMapping("/user")
-class UserController(val userInfoRepository: UserInfoRepository,
+class UserController(val userRepository: UserRepository,
                      val topicRepository: TopicRepository,
                      val topicReplyRepository: TopicReplyRepository,
                      val userCollectRepository: UserCollectRepository,
@@ -35,13 +35,13 @@ class UserController(val userInfoRepository: UserInfoRepository,
      */
     @PostMapping("/reg")
     fun register(@RequestParam email: String, @RequestParam name: String, @RequestParam pass: String): String {
-        val userInfo = UserInfo()
-        userInfo.email = email
-        userInfo.name = name
-        userInfo.passwd = BCryptPasswordEncoder().encode(pass)
-        userInfo.authorities = "USER"
+        val user = User()
+        user.email = email
+        user.name = name
+        user.passwd = BCryptPasswordEncoder().encode(pass)
+        user.authorities = "USER"
 
-        userInfoRepository.save(userInfo)
+        userRepository.save(user)
         return "redirect:/"
     }
 
@@ -81,7 +81,7 @@ class UserController(val userInfoRepository: UserInfoRepository,
         val model = mutableMapOf<String, Any>()
 
         val currentUserId = AuthUtil.currentUser().id
-        model["messages"] = messageRepository.findByUserIdAndReaded(currentUserId, false)
+        model["messages"] = messageRepository.findByUserIdAndReadied(currentUserId, false)
         return ModelAndView("user/message", model)
     }
 
@@ -117,7 +117,7 @@ class UserController(val userInfoRepository: UserInfoRepository,
         currentUser.sex = sex
         currentUser.city = city
         currentUser.sign = sign
-        userInfoRepository.save(currentUser)
+        userRepository.save(currentUser)
         return ActionResult(0, "")
     }
 }

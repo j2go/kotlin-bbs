@@ -17,7 +17,7 @@
                 <cite class="layui-hide-xs">${Session.user.name}</cite>
             <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
                 <i class="layui-badge fly-badge-vip layui-hide-xs">VIP${Session.user.level}</i>
-            <img src="${Session.user.avatorUrl}">
+            <img src="${Session.user.avatar}">
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="/user/setting"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
