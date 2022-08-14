@@ -123,4 +123,5 @@ class UserController(val userRepository: UserRepository,
 }
 
 data class Collection(val id: Long, val title: String, val time: Date)
+
 data class ReplyDesc(val topicId: Long, val title: String, val content: String, val time: Date)

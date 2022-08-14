@@ -11,7 +11,7 @@ object TopicType {
     const val DISCUSS = 3
     const val SUGGESTION = 4
     const val POST = 5
-    const val NOTIFICTION = 6
+    const val NOTIFICATION = 6
 
     private val map = mapOf(1 to "提问", 2 to "分享", 3 to "讨论", 4 to "建议", 5 to "公告", 6 to "动态")
 

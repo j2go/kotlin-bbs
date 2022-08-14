@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/action")
-class ActionController(val topicRepository: TopicRepository,
-                       val topicReplyRepository: TopicReplyRepository,
-                       val userLikeRepository: UserLikeRepository,
-                       val userCollectRepository: UserCollectRepository,
-                       val userRepository: UserRepository) {
+class ActionController(
+    val topicRepository: TopicRepository,
+    val topicReplyRepository: TopicReplyRepository,
+    val userLikeRepository: UserLikeRepository,
+    val userCollectRepository: UserCollectRepository,
+    val userRepository: UserRepository
+) {
 
     @PostMapping("/like")
     fun like(@RequestParam type: Int, @RequestParam id: Long): ActionResult {
@@ -82,7 +84,7 @@ class ActionController(val topicRepository: TopicRepository,
         return CollectResult(-1, false)
     }
 
-    @PostMapping("/topic-set")
+    @PostMapping("/topic/set")
     fun setTopic(@RequestParam id: Long, @RequestParam rank: Boolean, @RequestParam field: String): ActionResult {
         if (!AuthUtil.isAdmin()) {
             return ActionResult(-99, "需要管理员权限")
@@ -97,7 +99,7 @@ class ActionController(val topicRepository: TopicRepository,
         return ActionResult(0, "")
     }
 
-    @PostMapping("/topic-del")
+    @PostMapping("/topic/del")
     fun delTopic(@RequestParam id: Long): ActionResult {
         if (!AuthUtil.isAdmin()) {
             return ActionResult(-99, "需要管理员权限")
@@ -108,7 +110,7 @@ class ActionController(val topicRepository: TopicRepository,
         return ActionResult(0, "")
     }
 
-    @PostMapping("/reply-accept")
+    @PostMapping("/reply/accept")
     @Transactional
     fun acceptTopic(@RequestParam id: Long): ActionResult {
 
@@ -135,4 +137,5 @@ class ActionController(val topicRepository: TopicRepository,
 }
 
 data class ActionResult(val status: Int, val msg: String)
+
 data class CollectResult(val status: Int, val collected: Boolean)

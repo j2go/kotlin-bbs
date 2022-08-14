@@ -6,7 +6,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table
+@Table(indexes = [Index(name = "idx_user_read", columnList = "userId,readied")])
 class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
