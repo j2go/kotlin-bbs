@@ -29,15 +29,13 @@
                   <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">邮箱</label>
                 <div class="layui-input-inline">
-                  <input type="text" id="L_email" name="email" required lay-verify="required" autocomplete="off" class="layui-input"
-                  value="stiangao@gmail.com">
+                  <input type="text" id="L_email" name="email" required lay-verify="required" autocomplete="off" class="layui-input" value="a@b.com">
                 </div>
               </div>
               <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input"
-                  value="123">
+                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input" value="123">
                 </div>
               </div>
 

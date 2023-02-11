@@ -1,0 +1,1 @@
+<h1>Article Detail</h1>
